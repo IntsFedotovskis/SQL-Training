@@ -5,7 +5,13 @@ import {
   MOVIE_ACTORS,
   MOVIE_DIRECTORS,
   MOVIE_PRODUCTION_COMPANIES,
-  MOVIE_RATINGS
+  MOVIE_RATINGS,
+  MOVIES,
+  GENRES,
+  ACTORS,
+  DIRECTORS,
+  KEYWORDS,
+  PRODUCTION_COMPANIES
 } from "../src/table-names";
 import { Database } from "../src/database";
 import { tableInfo } from "../src/queries/table-info";
@@ -15,31 +21,51 @@ const CREATE_MOVIE_GENRES_TABLE = `create table ${MOVIE_GENRES}
 (
   movie_id integer NOT NULL,
   genre_id integer NOT NULL,
-  primary key (movie_id, genre_id)
-)`;
+  primary key (movie_id, genre_id),
+  FOREIGN KEY (movie_id) references ${MOVIES} (id) on delete restrict on
+  update restrict,
+  FOREIGN KEY (genre_id) references ${GENRES} (id) on delete restrict on
+  update restrict
+)`; 
 
 const CREATE_MOVIE_ACTORS_TABLE = `create table ${MOVIE_ACTORS} (
   movie_id integer NOT NULL,
   actor_id integer NOT NULL,
-  primary key (movie_id, actor_id)
+  primary key (movie_id, actor_id),
+  foreign key (movie_id) references ${MOVIES}(id) on update restrict on
+  delete restrict,
+  foreign key (actor_id) references ${ACTORS}(id) on update restrict on
+  delete restrict
   )`;
 
 const CREATE_MOVIE_DIRECTORS_TABLE = `create table ${MOVIE_DIRECTORS} (
   movie_id integer NOT NULL,
   director_id integer NOT NULL,
-  primary key (movie_id, director_id)
+  primary key (movie_id, director_id),
+  foreign key (movie_id) references ${MOVIES}(id) on delete restrict on
+  update restrict,
+  foreign key (director_id) references ${DIRECTORS}(id) on delete restrict on
+  update restrict
   )`;
 
 const CREATE_MOVIE_KEYWORDS_TABLE = `create table ${MOVIE_KEYWORDS} (
   movie_id integer NOT NULL,
   keyword_id integer NOT NULL,
-  primary key (movie_id, keyword_id)
+  primary key (movie_id, keyword_id),
+  foreign key (movie_id) references ${MOVIES}(id) on delete restrict on
+  update restrict,
+  foreign key (keyword_id) references ${KEYWORDS}(id) on delete restrict on
+  update restrict
   )`;
 
 const CREATE_MOVIE_PRODUCTION_COMPANIES_TABLE = `create table ${MOVIE_PRODUCTION_COMPANIES} (
   movie_id integer NOT NULL,
   company_id integer NOT NULL,
-  primary key (movie_id, company_id)
+  primary key (movie_id, company_id),
+  foreign key (movie_id) references ${MOVIES}(id) on delete restrict on
+  update restrict,
+  foreign key (company_id) references ${PRODUCTION_COMPANIES}(id) on delete restrict on
+  update restrict
   )`;
 
 describe("Insert Combined Data", () => {
